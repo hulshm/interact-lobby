@@ -107,6 +107,11 @@ const HOME_TIPS = [
 const SLIDES = [
   {type:'welcome'},
 
+  /* One-time event: shows only on the listed clinic screens, hides itself when `until` passes (Central time) */
+  {type:'text', sites:['sf49'], start:'2026-10-29', until:'2026-10-29T19:00',
+   eyebrow:'Happening tonight', title:'Trunk or Treat',
+   body:'Come trick-or-treat with us!', big:'Tonight · 5–7 pm', callout:'Questions? Ask the front desk.'},
+
   {type:'list', start:'10-01', end:'10-31',   // MM-DD = repeats every year
    eyebrow:'Halloween · Try this at home', title:'Getting ready for trick-or-treat',
    items:['Try the costume on a few times before the big night.',
@@ -255,6 +260,7 @@ const active = SLIDES.filter(s=>{
   if(showAll) return true;
   if(s.on===false) return false;
   if(!inWindow(s)) return false;
+  if(s.until && new Date().toLocaleString('sv-SE',{timeZone:tz}).replace(' ','T') > s.until) return false;
   if(s.type==='closure' && !upcomingClosure()) return false;
   if(s.sites && !s.sites.includes(site)) return false;
   return true;
